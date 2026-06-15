@@ -35,39 +35,65 @@ export function CapabilityLayers() {
     const layers = gsap.utils.toArray('.capability-layer');
     
     layers.forEach((layer: any, i) => {
-      gsap.from(layer.querySelector('.layer-content'), {
-        y: 50,
-        opacity: 0,
-        duration: 1,
-        scrollTrigger: {
-          trigger: layer,
-          start: 'top 80%',
-          end: 'top 50%',
-          scrub: 1,
-        },
-      });
+      // Content fade up
+      gsap.fromTo(layer.querySelector('.layer-content'), 
+        { y: 80, opacity: 0 },
+        {
+          y: 0,
+          opacity: 1,
+          ease: 'power3.out',
+          scrollTrigger: {
+            trigger: layer,
+            start: 'top 75%',
+            end: 'top 40%',
+            scrub: 1,
+          },
+        }
+      );
 
-      gsap.from(layer.querySelector('.layer-image'), {
-        scale: 1.1,
-        filter: 'grayscale(100%)',
-        scrollTrigger: {
-          trigger: layer,
-          start: 'top 90%',
-          end: 'bottom 20%',
-          scrub: 2,
-        },
-      });
+      // Premium Image Parallax
+      gsap.fromTo(layer.querySelector('.layer-image img'),
+        { yPercent: -20, scale: 1.1, filter: 'grayscale(100%)' },
+        {
+          yPercent: 20,
+          scale: 1,
+          filter: 'grayscale(0%)',
+          ease: 'none',
+          scrollTrigger: {
+            trigger: layer,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
+
+      // Background Text Parallax (Moves opposite to scroll)
+      gsap.fromTo(layer.querySelector('.bg-text'),
+        { yPercent: 50, opacity: 0 },
+        {
+          yPercent: -50,
+          opacity: 0.1,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: layer,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: true,
+          },
+        }
+      );
     });
   }, { scope: containerRef });
 
   return (
-    <div ref={containerRef} className="bg-background">
+    <div ref={containerRef} className="bg-background relative z-10">
       {CAPABILITIES.map((cap) => (
         <section
           key={cap.id}
           className="capability-layer relative min-h-screen flex items-center px-6 md:px-20 py-20 overflow-hidden"
         >
-          <div className="grid md:grid-cols-2 gap-12 items-center z-10 w-full">
+          <div className="grid md:grid-cols-2 gap-12 items-center z-10 w-full max-w-7xl mx-auto">
             <div className="layer-content space-y-6">
               <span className="font-mono text-primary text-sm tracking-widest">
                 {cap.id} // CAPABILITY
@@ -79,18 +105,20 @@ export function CapabilityLayers() {
                 {cap.description}
               </p>
             </div>
-            <div className="layer-image relative aspect-[4/5] md:aspect-square overflow-hidden rounded-sm grayscale hover:grayscale-0 transition-all duration-700">
-              <img
-                src={cap.image}
-                alt={cap.title}
-                className="object-cover w-full h-full scale-105"
-              />
-              <div className="absolute inset-0 bg-primary/10 mix-blend-overlay" />
+            <div className="relative aspect-[4/5] md:aspect-square overflow-hidden rounded-sm group">
+              <div className="layer-image absolute inset-0 w-full h-full">
+                <img
+                  src={cap.image}
+                  alt={cap.title}
+                  className="object-cover w-full h-full h-[140%] -top-[20%] absolute"
+                />
+              </div>
+              <div className="absolute inset-0 bg-primary/5 mix-blend-overlay group-hover:bg-transparent transition-colors duration-700" />
             </div>
           </div>
           
-          {/* Subtle Background Text */}
-          <div className="absolute -bottom-10 -right-10 text-[20vw] font-bold text-white/5 select-none pointer-events-none font-serif">
+          {/* Subtle Parallax Background Text */}
+          <div className="bg-text absolute top-1/2 right-0 -translate-y-1/2 text-[30vw] font-bold text-white select-none pointer-events-none font-serif leading-none opacity-5">
             {cap.id}
           </div>
         </section>

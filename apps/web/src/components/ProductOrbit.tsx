@@ -39,20 +39,39 @@ export function ProductOrbit() {
   const triggerRef = useRef<HTMLDivElement>(null);
 
   useGSAP(() => {
-    const pin = gsap.fromTo(
-      sectionRef.current,
-      { x: 0 },
-      {
-        x: '-300vw',
-        ease: 'none',
-        scrollTrigger: {
-          trigger: triggerRef.current,
-          pin: true,
-          scrub: 1,
-          end: () => `+=${sectionRef.current?.offsetWidth}`,
-        },
-      }
-    );
+    const panels = gsap.utils.toArray('.orbit-panel');
+    
+    // Main horizontal scroll animation
+    const pin = gsap.to(panels, {
+      xPercent: -100 * (panels.length - 1),
+      ease: 'none',
+      scrollTrigger: {
+        trigger: triggerRef.current,
+        pin: true,
+        scrub: 1,
+        end: () => `+=${sectionRef.current?.offsetWidth || 0}`,
+      },
+    });
+
+    // Horizontal parallax for images within the panels
+    panels.forEach((panel: any) => {
+      const img = panel.querySelector('.orbit-image img');
+      gsap.fromTo(img, 
+        { xPercent: -20 },
+        {
+          xPercent: 20,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: panel,
+            containerAnimation: pin,
+            start: 'left right',
+            end: 'right left',
+            scrub: true,
+          }
+        }
+      );
+    });
+
     return () => {
       pin.kill();
     };
@@ -65,34 +84,34 @@ export function ProductOrbit() {
           {PRODUCTS.map((product, index) => (
             <section
               key={index}
-              className="h-screen w-screen flex-shrink-0 flex items-center justify-center px-6 md:px-20 relative"
+              className="orbit-panel h-screen w-screen flex-shrink-0 flex items-center justify-center px-6 md:px-20 relative overflow-hidden"
             >
-              <div className="grid md:grid-cols-2 gap-12 items-center w-full max-w-7xl">
+              <div className="grid md:grid-cols-2 gap-12 items-center w-full max-w-7xl z-10">
                 <div className="space-y-4">
                   <div className="flex items-center gap-4 font-mono text-sm text-primary">
                     <span>{product.year}</span>
                     <span className="w-8 h-px bg-primary/30" />
                     <span>{product.category}</span>
                   </div>
-                  <h3 className="text-6xl md:text-8xl font-serif leading-none">
+                  <h3 className="text-6xl md:text-8xl font-serif leading-none text-foreground">
                     {product.title}
                   </h3>
                   <button className="mt-8 px-8 py-3 bg-primary text-primary-foreground rounded-full font-medium hover:scale-105 transition-transform">
                     Explore Project
                   </button>
                 </div>
-                <div className="relative aspect-[16/10] overflow-hidden rounded-sm group">
+                <div className="orbit-image relative aspect-[16/10] overflow-hidden rounded-sm group">
                   <img
                     src={product.image}
                     alt={product.title}
-                    className="object-cover w-full h-full transition-transform duration-1000 group-hover:scale-110"
+                    className="absolute -left-[20%] w-[140%] h-full object-cover transition-transform duration-1000 group-hover:scale-105"
                   />
                   <div className="absolute inset-0 bg-black/20 group-hover:bg-transparent transition-colors duration-500" />
                 </div>
               </div>
               
               {/* Background Index */}
-              <div className="absolute top-10 right-10 font-mono text-9xl text-white/5 select-none pointer-events-none">
+              <div className="absolute top-1/2 right-20 -translate-y-1/2 font-serif text-[30vw] text-white/5 select-none pointer-events-none leading-none mix-blend-overlay">
                 0{index + 1}
               </div>
             </section>
