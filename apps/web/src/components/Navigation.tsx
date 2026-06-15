@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Menu, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { ThemeToggle } from './ThemeToggle';
 
 const NAV_LINKS = [
   { name: 'Branding', href: '#branding' },
@@ -35,7 +36,7 @@ export function Navigation() {
         <div className="flex items-center justify-between max-w-7xl mx-auto">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-full animate-pulse" />
-            <span className="text-xl font-serif font-bold tracking-tighter">
+            <span className="text-xl font-serif font-bold tracking-tighter text-foreground">
               GEETBIH <span className="text-muted-foreground font-light">LABS</span>
             </span>
           </div>
@@ -51,18 +52,24 @@ export function Navigation() {
                 {link.name}
               </a>
             ))}
-            <button className="px-6 py-2 border border-primary/50 rounded-full text-xs font-mono uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all">
-              Start Audit
-            </button>
+            <div className="flex items-center gap-4">
+              <ThemeToggle />
+              <button className="px-6 py-2 border border-primary/50 rounded-full text-xs font-mono uppercase tracking-widest hover:bg-primary hover:text-primary-foreground transition-all text-foreground">
+                Start Audit
+              </button>
+            </div>
           </div>
 
           {/* Mobile Toggle */}
-          <button
-            className="md:hidden text-foreground"
-            onClick={() => setIsMobileMenuOpen(true)}
-          >
-            <Menu className="w-8 h-8" />
-          </button>
+          <div className="flex md:hidden items-center gap-4">
+            <ThemeToggle />
+            <button
+              className="text-foreground"
+              onClick={() => setIsMobileMenuOpen(true)}
+            >
+              <Menu className="w-8 h-8" />
+            </button>
+          </div>
         </div>
       </nav>
 
@@ -87,7 +94,7 @@ export function Navigation() {
                   key={link.name}
                   href={link.href}
                   onClick={() => setIsMobileMenuOpen(false)}
-                  className="text-4xl font-serif hover:text-primary transition-colors"
+                  className="text-4xl font-serif hover:text-primary transition-colors text-foreground"
                 >
                   {link.name}
                 </a>
