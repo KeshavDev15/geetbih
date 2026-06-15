@@ -5,68 +5,70 @@
 @custom-variant dark (&:where(.dark, .dark *));
 
 /* 
-  GEETBIH LABS - Dual Theme Palette (2026)
+  GEETBIH LABS - Premium Agency Palette (2026)
 */
 :root {
-  /* Minimalist Studio (Light Mode) */
-  --background: oklch(99% 0.005 260);
-  --foreground: oklch(20% 0.01 260);
+  /* "Cloud Dancer" Minimalist Luxury (Light Mode) */
+  /* Replaced harsh white with a gallery-style warm off-white */
+  --background: oklch(97% 0.005 90);
+  --foreground: oklch(20% 0.02 260);
 
   --card: oklch(100% 0 0);
-  --card-foreground: oklch(20% 0.01 260);
+  --card-foreground: oklch(20% 0.02 260);
   --popover: oklch(100% 0 0);
-  --popover-foreground: oklch(20% 0.01 260);
+  --popover-foreground: oklch(20% 0.02 260);
 
-  /* Deep Emerald for Light Mode contrast */
-  --primary: oklch(45% 0.16 170);
-  --primary-foreground: oklch(99% 0 0);
+  /* Deep Architectural Slate */
+  --primary: oklch(30% 0.05 260);
+  --primary-foreground: oklch(98% 0 0);
 
-  --secondary: oklch(95% 0.01 260);
-  --secondary-foreground: oklch(25% 0.01 260);
-  --muted: oklch(95% 0.01 260);
-  --muted-foreground: oklch(55% 0.01 260);
+  --secondary: oklch(93% 0.01 90);
+  --secondary-foreground: oklch(30% 0.05 260);
+  --muted: oklch(93% 0.01 90);
+  --muted-foreground: oklch(50% 0.02 260);
 
-  --accent: oklch(95% 0.01 260);
-  --accent-foreground: oklch(45% 0.16 170);
+  --accent: oklch(93% 0.01 90);
+  --accent-foreground: oklch(30% 0.05 260);
 
   --destructive: oklch(60% 0.15 25);
   --destructive-foreground: oklch(99% 0 0);
 
-  --border: oklch(90% 0.01 260);
-  --input: oklch(90% 0.01 260);
-  --ring: oklch(45% 0.16 170);
+  --border: oklch(88% 0.01 90);
+  --input: oklch(88% 0.01 90);
+  --ring: oklch(30% 0.05 260);
 
   --radius: 0.5rem;
 }
 
 .dark {
-  /* Softened Obsidian Pulse (Dark Mode) */
-  --background: oklch(18% 0.01 260);
-  --foreground: oklch(97% 0.01 260);
+  /* "Mood Mode Noir" (Dark Mode) */
+  /* Fixed the 'murky grey' issue by deepening the background to a cinematic void */
+  --background: oklch(10% 0.01 280);
+  --foreground: oklch(96% 0.01 280);
 
-  --card: oklch(23% 0.01 260);
-  --card-foreground: oklch(97% 0.01 260);
-  --popover: oklch(23% 0.01 260);
-  --popover-foreground: oklch(97% 0.01 260);
+  --card: oklch(14% 0.01 280);
+  --card-foreground: oklch(96% 0.01 280);
+  --popover: oklch(14% 0.01 280);
+  --popover-foreground: oklch(96% 0.01 280);
 
-  /* Electric Mint */
-  --primary: oklch(85% 0.16 170);
-  --primary-foreground: oklch(18% 0.01 260);
+  /* Plasma Teal / Bioluminescent accent */
+  --primary: oklch(85% 0.12 190);
+  --primary-foreground: oklch(10% 0.01 280);
 
-  --secondary: oklch(28% 0.01 260);
-  --secondary-foreground: oklch(97% 0.01 260);
-  --muted: oklch(28% 0.01 260);
-  --muted-foreground: oklch(70% 0.01 260);
+  --secondary: oklch(20% 0.01 280);
+  --secondary-foreground: oklch(96% 0.01 280);
+  --muted: oklch(20% 0.01 280);
+  --muted-foreground: oklch(70% 0.01 280);
 
-  --accent: oklch(28% 0.01 260);
-  --accent-foreground: oklch(85% 0.16 170);
+  --accent: oklch(20% 0.01 280);
+  --accent-foreground: oklch(85% 0.12 190);
 
   --destructive: oklch(60% 0.15 25);
-  --destructive-foreground: oklch(97% 0.01 260);
+  --destructive-foreground: oklch(96% 0.01 280);
 
-  --border: oklch(28% 0.01 260);
-  --input: oklch(28% 0.01 260);
-  --ring: oklch(85% 0.16 170);
+  --border: oklch(20% 0.01 280);
+  --input: oklch(20% 0.01 280);
+  --ring: oklch(85% 0.12 190);
 }
 
 /* 
