@@ -25,12 +25,36 @@ const STEPS = [
 export function AuditEngine() {
   const [currentStep, setCurrentStep] = useState(0);
   const [isFinished, setIsFinished] = useState(false);
+  const [answers, setAnswers] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
-  const handleNext = () => {
+  const handleNext = async (option: string) => {
+    const stepId = STEPS[currentStep].id;
+    const newAnswers = { ...answers, [stepId]: option };
+    setAnswers(newAnswers);
+
     if (currentStep < STEPS.length - 1) {
       setCurrentStep(currentStep + 1);
     } else {
-      setIsFinished(true);
+      setIsSubmitting(true);
+      try {
+        // Send data to Nest.js API
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+        await fetch(`${apiUrl}/audits`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            bottleneck: newAnswers['pain-point'] || 'General',
+            scale: newAnswers['scale'] || 'Unknown',
+            email: 'user@example.com', // Would normally collect this in an extra step
+          }),
+        });
+      } catch (error) {
+        console.error('Failed to submit audit:', error);
+      } finally {
+        setIsSubmitting(false);
+        setIsFinished(true);
+      }
     }
   };
 
@@ -51,19 +75,20 @@ export function AuditEngine() {
                 <span className="font-mono text-primary text-sm uppercase tracking-tighter">
                   Step 0{currentStep + 1} // Audit Engine
                 </span>
-                <h2 className="text-4xl md:text-6xl font-serif leading-tight">
+                <h2 className="text-4xl md:text-6xl font-serif leading-tight text-foreground">
                   {STEPS[currentStep].question}
                 </h2>
               </div>
 
-              <div className="grid gap-4">
+              <div className="grid gap-4 opacity-100">
                 {STEPS[currentStep].options.map((option, idx) => (
                   <button
                     key={idx}
-                    onClick={handleNext}
-                    className="group flex items-center justify-between p-6 bg-background border border-border rounded-sm hover:border-primary transition-all duration-300 text-left"
+                    onClick={() => handleNext(option)}
+                    disabled={isSubmitting}
+                    className="group flex items-center justify-between p-6 bg-background border border-border rounded-sm hover:border-primary transition-all duration-300 text-left disabled:opacity-50"
                   >
-                    <span className="text-xl md:text-2xl font-light">{option}</span>
+                    <span className="text-xl md:text-2xl font-light text-foreground">{option}</span>
                     <ArrowRight className="w-6 h-6 text-muted-foreground group-hover:text-primary transition-colors" />
                   </button>
                 ))}
@@ -78,12 +103,12 @@ export function AuditEngine() {
               <div className="inline-block p-4 rounded-full bg-primary/10 text-primary mb-4">
                 <Send className="w-12 h-12" />
               </div>
-              <h2 className="text-5xl md:text-7xl font-serif">Transmission Received.</h2>
+              <h2 className="text-5xl md:text-7xl font-serif text-foreground">Transmission Received.</h2>
               <p className="text-xl text-muted-foreground max-w-md mx-auto">
                 The AI Factory is analyzing your data. Our lead engineer will be in touch within 24 cycles.
               </p>
               <button 
-                onClick={() => {setCurrentStep(0); setIsFinished(false);}}
+                onClick={() => {setCurrentStep(0); setIsFinished(false); setAnswers({});}}
                 className="text-primary font-mono text-sm uppercase hover:underline"
               >
                 Restart Audit
