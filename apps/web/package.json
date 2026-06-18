@@ -20,6 +20,7 @@
     "clsx": "^2.1.1",
     "font-face-observer": "^1.0.0",
     "gsap": "^3.15.0",
+    "@geetbih/instagram-automation": "workspace:*",
     "lenis": "^1.3.23",
     "lucide-react": "^1.18.0",
     "motion": "^12.40.0",
